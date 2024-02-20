@@ -1,17 +1,12 @@
 export type PaymentType = 'online' | 'upon receipt'; // способ оплаты
 
-// интерфейс данных покупателя
-export interface IClient {
-  payment: PaymentType;
-  email: string;
-  phone: string;
-  address: string;
-}
-
-// интерфейс заказа
-export interface IOrder extends IClient {
-  items: string[]
-  total: number;
+export interface IItem {
+  id: string;         // идентификатор товара
+  title: string;      // имя товара
+  category: string;   // категория
+  description: string;// описание
+  image: string;      // изображение
+  price: number;      // цена
 }
 
 // интерфейс ответа подтверждения заказа

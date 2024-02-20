@@ -1,7 +1,7 @@
-import { IOrder, IOrderSuccess } from '../types';
-import {IItem} from './Item';
+import {IItem, IOrderSuccess } from '../types';
+import {IOrder} from './Order';
  
-export interface IAuctionAPI {
+export interface IWebAPI {
   getProductList: () => Promise<IItem[]>;
   getItem: (id: string) => Promise<IItem>;
   postOrder: (order: IOrder) => Promise<IOrderSuccess>;

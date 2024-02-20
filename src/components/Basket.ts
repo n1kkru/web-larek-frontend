@@ -1,14 +1,14 @@
 import {ICatalog} from './Catalog';
 
-interface IBasketModel {
+export interface IBasketModel {
   // items: Map<string, number>; // товар в виде название: цена
   items: ICatalog;            // список товаров в корзине (?)
-  totalPrice: number;         // итоговая цена
   add(id: string): void;      // добавить товар в корзину
   remove(id: string) : void;  // удалить из корзины
+  clear(): void;              // отчистить корзину
 }
 
-interface IBasketView {
+export interface IBasketView {
   items: HTMLElement[]; // список товаров
-  onClick: (event: MouseEvent) => void;
+  total: number;        // сумма покупок
 }

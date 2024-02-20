@@ -1,4 +1,4 @@
-interface ICard {
+export interface ICard {
   title: HTMLElement;
   image: HTMLImageElement;
   category: HTMLElement;

@@ -1,8 +1,8 @@
-import {IItem} from './Item';
+import {IOrder} from './Order';
 
 // интерфейс списка товаров
 export interface ICatalog {
-  items: IItem[];             // список товаров
-  add(item: IItem): void;     // метод добавления товара
-  getItem(id: string): IItem; // получить товар по id
+  items: IOrder[];             // список товаров
+  add(items: IOrder[]): void;  // метод добавления товаров
+  getItem(id: string): IOrder; // получить товар по id
 }
