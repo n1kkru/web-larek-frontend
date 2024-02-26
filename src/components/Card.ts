@@ -2,12 +2,11 @@ import {ensureElement} from '../utils/utils'
 import {Component} from "./base/Component";
 
 export interface ICard {
-  title: HTMLElement;
-  image: HTMLImageElement;
-  category: HTMLElement;
-  price: HTMLElement;
-  description: HTMLElement;
-  onClick: (event: MouseEvent) => void;
+  title: string;
+  image: string;
+  category: string;
+  price: number;
+  description: string;
 }
 
 export class Card extends Component<ICard> {
@@ -17,8 +16,13 @@ export class Card extends Component<ICard> {
   protected _price: HTMLElement;
   protected _description?: HTMLElement;
 
-  constructor(protected blockName: string, container: HTMLElement) {
+  constructor(protected blockName: string, container: HTMLElement, actions?: ICardActions) {
     super(container);
+    
+    if (actions?.onClick) {
+      container.addEventListener('click', actions.onClick);
+    }
+    
     this._title = ensureElement<HTMLElement>(`.${blockName}__title`, container);
     this._image = ensureElement<HTMLImageElement>(`.${blockName}__image`, container);
     this._category = container.querySelector(`.${blockName}__category`);
@@ -52,11 +56,16 @@ export class Card extends Component<ICard> {
 
 }
 
-export class GalleryItem extends Card {
-  constructor(protected blockName: string, container: HTMLElement) {
-    super(blockName, container);
-  }
-
-  // здесь будет событие "card:select"
+interface ICardActions {
   onClick: (event: MouseEvent) => void;
+}
+
+export class GalleryItem extends Card {
+  constructor(protected blockName: string, container: HTMLElement, actions?: ICardActions) {
+    super(blockName, container);
+
+    if (actions?.onClick) {
+      container.addEventListener('click', actions.onClick);
+    }
+  }
 }

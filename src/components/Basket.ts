@@ -3,20 +3,25 @@ import {createElement, ensureElement} from '../utils/utils'
 import {Component} from "./base/Component";
 import {IEvents} from "./base/events";
 
+export interface IBasketItem {
+  id: string;         // идентификатор товара
+  title: string;      // имя товара
+  price: number;      // цена
+}
 
 export interface IBasketModel {
-  _items: IItem[];            // список товаров в корзине (?)
-  add(id: string): void;      // добавить товар в корзину
+  _items: IBasketItem[];            // список товаров в корзине (?)
+  add(newItem: IBasketItem): void;      // добавить товар в корзину
   remove(id: string) : void;  // удалить из корзины
   clear(): void;              // отчистить корзину
-  getItems(): IItem[];        // получить корзину
+  getItems(): IBasketItem[];        // получить корзину
 }
 
 export class BasketModel implements IBasketModel {
-  _items : IItem[] = [];
+  _items : IBasketItem[] = [];
 
-  add(id: string): void {
-    this._items.push(this._items.find(item => item.id === id));
+  add(newItem: IBasketItem): void {
+    this._items.push(newItem);
   }
 
   remove(id: string) : void {
@@ -27,7 +32,7 @@ export class BasketModel implements IBasketModel {
     this._items = [];
   }
 
-  getItems(): IItem[] {
+  getItems(): IBasketItem[] {
     return this._items;
   }
 
@@ -38,7 +43,7 @@ export interface IBasketView {
   total: number;        // сумма покупок
 }
 
-export class Basket extends Component<IBasketView> {
+export class BasketView extends Component<IBasketView> {
   protected _list: HTMLElement;
   protected _total: HTMLElement;
   protected _button: HTMLElement;

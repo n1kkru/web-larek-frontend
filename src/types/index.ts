@@ -1,3 +1,7 @@
+import { IBasketView } from "../components/Basket";
+import { ICatalog } from "../components/Catalog";
+import { IOrder } from "../components/Order";
+
 export type PaymentType = 'online' | 'upon receipt'; // способ оплаты
 
 export interface IItem {
@@ -13,4 +17,10 @@ export interface IItem {
 export interface IOrderSuccess {
   id: string;
   total: number
+}
+
+export interface IAppState {
+  catalog: IItem[];
+  basket: string[];
+  order: IOrder | null;
 }

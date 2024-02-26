@@ -16,10 +16,11 @@ export class Page extends Component<IPage> {
 
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
-        this._basket = ensureElement<HTMLElement>('header__basket');
-        this._catalog = ensureElement<HTMLElement>('gallery');
-        this._wrapper = ensureElement<HTMLElement>('header__logo-image');
-        this._counter = ensureElement<HTMLElement>('header__basket-counter');
+        this._basket = ensureElement<HTMLElement>('.header__basket');
+        this._catalog = ensureElement<HTMLElement>('.gallery');
+        this._wrapper = ensureElement<HTMLElement>('.header__logo-image');
+        this._counter = ensureElement<HTMLElement>('.header__basket-counter');
+    
 
         this._basket.addEventListener('click', () => {
             this.events.emit('basket:open');
