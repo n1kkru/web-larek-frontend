@@ -2,7 +2,7 @@ import { IBasketView } from "../components/Basket";
 import { ICatalog } from "../components/Catalog";
 import { IOrder } from "../components/Order";
 
-export type PaymentType = 'online' | 'upon receipt'; // способ оплаты
+export type PaymentType = 'card' | 'cash'; // способ оплаты
 
 export interface IItem {
   id: string;         // идентификатор товара
@@ -15,7 +15,6 @@ export interface IItem {
 
 // интерфейс ответа подтверждения заказа
 export interface IOrderSuccess {
-  id: string;
   total: number
 }
 
@@ -24,3 +23,10 @@ export interface IAppState {
   basket: string[];
   order: IOrder | null;
 }
+
+export interface IActions {
+  onClick: (event: MouseEvent) => void;
+}
+
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
+

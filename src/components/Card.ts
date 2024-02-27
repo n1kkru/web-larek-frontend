@@ -1,5 +1,8 @@
+import { IActions } from '../types';
 import {ensureElement} from '../utils/utils'
 import {Component} from "./base/Component";
+
+/* что то сделать с карточками */
 
 export interface ICard {
   title: string;
@@ -16,7 +19,7 @@ export class Card extends Component<ICard> {
   protected _price: HTMLElement;
   protected _description?: HTMLElement;
 
-  constructor(protected blockName: string, container: HTMLElement, actions?: ICardActions) {
+  constructor(protected blockName: string, container: HTMLElement, actions?: IActions) {
     super(container);
     
     if (actions?.onClick) {
@@ -47,7 +50,7 @@ export class Card extends Component<ICard> {
   }
 
   set price(value: number) {
-    this.setText(this._price, value);
+    this.setText(this._price, value + ' синапсов');
   }
 
   get price() : number {
@@ -56,16 +59,54 @@ export class Card extends Component<ICard> {
 
 }
 
-interface ICardActions {
-  onClick: (event: MouseEvent) => void;
-}
-
 export class GalleryItem extends Card {
-  constructor(protected blockName: string, container: HTMLElement, actions?: ICardActions) {
+  constructor(protected blockName: string, container: HTMLElement, actions?: IActions) {
     super(blockName, container);
 
     if (actions?.onClick) {
       container.addEventListener('click', actions.onClick);
     }
   }
+}
+
+export interface ICardBasket {  
+  title: string;
+  price: string;
+  count: number
+}
+
+export class BasketCard extends Component<ICardBasket> {
+  // const count: HTMLElement;
+  protected _title: HTMLElement;
+  protected _count: HTMLElement;
+  protected _price: HTMLElement;
+  protected _button: HTMLButtonElement;
+
+
+  constructor(protected blockName: string, container: HTMLElement, actions?: IActions) {
+    super(container);
+    this._title = ensureElement<HTMLElement>(`.${blockName}__title`, container);
+    this._price = ensureElement<HTMLElement>(`.${blockName}__price`, container);
+    this._count = ensureElement<HTMLElement>(`.basket__item-index`, container);
+    this._button = ensureElement<HTMLButtonElement>(`.basket__item-delete`, container);
+
+
+    if (actions?.onClick) {
+      this._button.addEventListener('click', actions.onClick);
+    }
+
+  }
+
+  set title(value: string) {
+    this.setText(this._title, value);
+  }
+
+  set price(value: string) {
+    this.setText(this._price, value + ' синапсов');
+  }
+
+  set count(value: number) {
+    this.setText(this._count, value);
+  }
+
 }

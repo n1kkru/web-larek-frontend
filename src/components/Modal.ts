@@ -1,14 +1,10 @@
 import { ensureElement } from '../utils/utils';
-import {IForm} from './Form';
 import { Component } from './base/Component';
 import { IEvents } from './base/events';
 
 //базовый компонент
 export interface IModal {
   content: HTMLElement;
-  // open(): void;
-  // сlose: (event: MouseEvent) => void;
-  // render(): HTMLElement;
 }
 
 export class Modal extends Component<IModal> {
