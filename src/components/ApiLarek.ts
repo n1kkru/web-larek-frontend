@@ -1,5 +1,4 @@
-import {IItem, IOrderSuccess } from '../types';
-import {IOrder} from './Order';
+import {IItem, IOrder, IOrderSuccess } from '../types';
 import { Api } from './base/api';
  
 type dataObject = {

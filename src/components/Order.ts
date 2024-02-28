@@ -1,14 +1,9 @@
-import { IOrderSuccess, PaymentType } from "../types";
+import { IActions, IOrderAddress, IOrderContacs, IOrderSuccess, PaymentType } from "../types";
 import { ensureElement } from "../utils/utils";
 import { Form } from "./Form";
 import { Component } from "./base/Component";
 import { IEvents } from "./base/events";
 
-// для формы 1
-export interface IOrderAddress {
-  payment: PaymentType | null;
-  address: string;
-}
 
 export class OrderAddress extends Form<IOrderAddress> {
   protected _payment: PaymentType;
@@ -53,12 +48,6 @@ export class OrderAddress extends Form<IOrderAddress> {
   }
 }
 
-// для формы 2
-export interface IOrderContacs {
-  email: string;
-  phone: string;
-}
-
 export class OrderContacts extends Form<IOrderContacs> {
   protected _email: HTMLInputElement;
   protected _phone: HTMLInputElement;
@@ -88,21 +77,11 @@ export class OrderContacts extends Form<IOrderContacs> {
   }
 }
 
-// для отправки
-export interface IOrder extends IOrderAddress, IOrderContacs {
-  items: string[];
-  total: number;
-}
-
-interface ISuccessActions {
-  onClick: () => void;
-}
-
 export class OrderSuccess extends Component<IOrderSuccess> {
   protected _total: HTMLElement;
   protected _close: HTMLElement;
 
-  constructor(container: HTMLElement, actions: ISuccessActions) {
+  constructor(container: HTMLElement, actions: IActions) {
       super(container);
 
       this._total = ensureElement<HTMLElement>('.order-success__description', this.container);

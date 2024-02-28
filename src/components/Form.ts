@@ -24,24 +24,18 @@ export class Form<T> extends Component<IForm> {
 
     this.container.addEventListener('submit', (e: Event) => {
       e.preventDefault();
-      console.log('Submit => ',this.container.name);
-
       this.events.emit(`${this.container.name}:submit`, {valid: false});
     });
-
   }
 
-  protected onInputChange(field: keyof T, value: string) {
-    console.log(`${this.container.name}.${String(field)}:change`);
-    
+  protected onInputChange(field: keyof T, value: string) {  
     this.events.emit(`${this.container.name}.${String(field)}:change`, {
         field,
         value
     });
-}
+  }
 
   set valid(value: boolean) {
-    console.log('valid', value);
     this._submitButton.disabled = !value;
   }
 

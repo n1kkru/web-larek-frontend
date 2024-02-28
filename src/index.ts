@@ -7,10 +7,9 @@ import { Page } from './components/Page';
 import { Modal } from './components/Modal';
 import { IBasketItem, BasketView, BasketModel } from './components/Basket';
 import { BasketCard, Card, GalleryItem } from './components/Card';
-import { Success } from './components/Success';
-import { FormErrors, IItem, PaymentType } from './types';
+import { FormErrors, IItem, IOrder, PaymentType } from './types';
 import { Catalog } from './components/Catalog';
-import { IOrder, OrderAddress, OrderContacts, OrderSuccess } from './components/Order';
+import { OrderAddress, OrderContacts, OrderSuccess } from './components/Order';
 
 const events = new EventEmitter();
 const api = new WebAPI(CDN_URL, API_URL);
@@ -30,8 +29,6 @@ const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
 const basketView = new BasketView(cloneTemplate(basketTemplate), events);
 const orderAddress = new OrderAddress(cloneTemplate(formOrderTemplate), events);
 const orderContacts = new OrderContacts(cloneTemplate(formContactsTemplate), events);
-
-
 
 // модели данных
 const basketModel = new BasketModel();
@@ -158,11 +155,9 @@ events.on('order:submit', (data : {valid: boolean}) => {
 events.on('contacts:submit', () => { 
   order.items = basketModel.getItems().map(item => item.id);
   order.total = basketModel.getTotal();
-  console.log(order);
   
   api.postOrder(order)
     .then( (res) => {
-      console.log(res);
       const orderSuccess = new OrderSuccess(cloneTemplate(modalSuccessTemplate),  {
         onClick: () => {
             modal.close();
@@ -235,16 +230,6 @@ events.on(/^contacts\..*:change/, (data: { field?: keyof IOrder, value: string }
   }
   
 });
-
-
-
-
-
-
-
-// events.on()
-
-
 
 // Блокируем прокрутку страницы если открыта модалка
 events.on('modal:open', () => {

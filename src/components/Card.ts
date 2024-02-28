@@ -4,7 +4,8 @@ import {Component} from "./base/Component";
 
 /* что то сделать с карточками */
 
-export interface ICard {
+
+interface ICard {
   title: string;
   image: string;
   category: string;
@@ -18,19 +19,21 @@ export class Card extends Component<ICard> {
   protected _category?: HTMLElement;
   protected _price: HTMLElement;
   protected _description?: HTMLElement;
+  protected _buttonBuy?: HTMLButtonElement;
 
   constructor(protected blockName: string, container: HTMLElement, actions?: IActions) {
     super(container);
-    
-    if (actions?.onClick) {
-      container.addEventListener('click', actions.onClick);
-    }
-    
+        
     this._title = ensureElement<HTMLElement>(`.${blockName}__title`, container);
     this._image = ensureElement<HTMLImageElement>(`.${blockName}__image`, container);
     this._category = container.querySelector(`.${blockName}__category`);
     this._price = container.querySelector(`.${blockName}__price`);
     this._description = container.querySelector(`.${blockName}__text`);
+    this._buttonBuy = container.querySelector(`.${blockName}__button`);
+    
+    if (actions?.onClick) {
+      this._buttonBuy.addEventListener('click', actions.onClick);
+    }
   }
 
   set title(value: string) {
@@ -47,14 +50,49 @@ export class Card extends Component<ICard> {
 
   set category(value: string) {
     this.setText(this._category, value);
+    this.setColor(value);
   }
 
   set price(value: number) {
-    this.setText(this._price, value + ' синапсов');
+    if (value === null) {
+      this.setText(this._price, 'Бесценно');
+      this.setDisabled(this._buttonBuy, true);
+    }
+    else {
+      this.setText(this._price, value + ' синапсов');
+    }
   }
 
   get price() : number {
     return Number(this._price.textContent);
+  }
+
+  private setColor(category: string) {
+    switch (category) {
+      case 'другое':
+        this._category.classList.add('card__category_other');
+        break;
+    
+      case 'софт-скил':
+        this._category.classList.add('card__category_soft');
+        break;
+        
+      case 'дополнительное':
+        this._category.classList.add('card__category_additional');
+        break;
+
+      case 'кнопка':
+        this._category.classList.add('card__category_button');
+        break;
+
+      case 'хард-скил':
+        this._category.classList.add('card__category_hard');
+        break;
+
+      default:
+        this._category.classList.add('card__category_other');
+        break;
+    }
   }
 
 }
@@ -69,14 +107,13 @@ export class GalleryItem extends Card {
   }
 }
 
-export interface ICardBasket {  
+interface ICardBasket {  
   title: string;
   price: string;
   count: number
 }
 
 export class BasketCard extends Component<ICardBasket> {
-  // const count: HTMLElement;
   protected _title: HTMLElement;
   protected _count: HTMLElement;
   protected _price: HTMLElement;
@@ -94,7 +131,6 @@ export class BasketCard extends Component<ICardBasket> {
     if (actions?.onClick) {
       this._button.addEventListener('click', actions.onClick);
     }
-
   }
 
   set title(value: string) {

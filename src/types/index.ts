@@ -1,7 +1,3 @@
-import { IBasketView } from "../components/Basket";
-import { ICatalog } from "../components/Catalog";
-import { IOrder } from "../components/Order";
-
 export type PaymentType = 'card' | 'cash'; // способ оплаты
 
 export interface IItem {
@@ -13,15 +9,27 @@ export interface IItem {
   price: number;      // цена
 }
 
+// для формы 1
+export interface IOrderAddress {
+  payment: PaymentType | null;
+  address: string;
+}
+
+// для формы 2
+export interface IOrderContacs {
+  email: string;
+  phone: string;
+}
+
+// для отправки
+export interface IOrder extends IOrderAddress, IOrderContacs {
+  items: string[];
+  total: number;
+}
+
 // интерфейс ответа подтверждения заказа
 export interface IOrderSuccess {
   total: number
-}
-
-export interface IAppState {
-  catalog: IItem[];
-  basket: string[];
-  order: IOrder | null;
 }
 
 export interface IActions {
