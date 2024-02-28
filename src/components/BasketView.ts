@@ -1,51 +1,6 @@
-import { IActions } from '../types';
 import {createElement, ensureElement} from '../utils/utils'
 import {Component} from "./base/Component";
 import {IEvents} from "./base/events";
-
-export interface IBasketItem {
-  id: string;         // идентификатор товара
-  title: string;      // имя товара
-  price: number;      // цена
-}
-
-export interface IBasketModel {
-  _items: IBasketItem[];            // список товаров в корзине (?)
-  add(newItem: IBasketItem): void;      // добавить товар в корзину
-  remove(id: string) : void;  // удалить из корзины
-  clear(): void;              // отчистить корзину
-  getItems(): IBasketItem[];        // получить корзину
-  getCount() : number;
-}
-
-export class BasketModel implements IBasketModel {
-  _items : IBasketItem[] = [];
-
-  add(newItem: IBasketItem): void {
-    this._items.push(newItem);
-  }
-
-  remove(id: string) : void {
-    this._items = this._items.filter(item => item.id !== id);
-  }
-
-  clear(): void {
-    this._items = [];
-  }
-
-  getItems(): IBasketItem[] {
-    return this._items;
-  }
-
-  getCount() : number {
-    return this._items.length;
-  }
-
-  getTotal() : number {
-    return this._items.reduce( (sum, item) => sum + item.price, 0)
-  }
-
-}
 
 export interface IBasketView {
   items: HTMLElement[]; // список товаров
@@ -57,7 +12,7 @@ export class BasketView extends Component<IBasketView> {
   protected _total: HTMLElement;
   protected _button: HTMLButtonElement;
 
-  constructor(container: HTMLElement, protected events: IEvents, actions?: IActions ) {
+  constructor(container: HTMLElement, protected events: IEvents) {
     super(container);
     this._list = ensureElement<HTMLElement>('.basket__list', this.container);
     this._total = this.container.querySelector('.basket__price');

@@ -5,11 +5,12 @@ import { EventEmitter } from './components/base/events';
 import { cloneTemplate, ensureElement } from './utils/utils';
 import { Page } from './components/Page';
 import { Modal } from './components/Modal';
-import { IBasketItem, BasketView, BasketModel } from './components/Basket';
+import { BasketModel } from './components/BasketModel';
 import { BasketCard, Card, GalleryItem } from './components/Card';
-import { FormErrors, IItem, IOrder, PaymentType } from './types';
+import { IBasketItem, FormErrors, IItem, IOrder, PaymentType } from './types';
 import { Catalog } from './components/Catalog';
 import { OrderAddress, OrderContacts, OrderSuccess } from './components/Order';
+import { BasketView } from './components/BasketView';
 
 const events = new EventEmitter();
 const api = new WebAPI(CDN_URL, API_URL);
@@ -44,7 +45,7 @@ let formErrors: FormErrors = {};
 
 // загрузка каталога 
 events.on('catalog:loading', (catalog: Catalog) => {
-   page.catalog = catalog.items.map((item) => {
+   page.catalog = catalog.getItems().map((item) => {
     const card = new GalleryItem(
       'card',
       cloneTemplate(cardInCatalogTemplate), 

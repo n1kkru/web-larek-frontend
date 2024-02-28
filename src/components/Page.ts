@@ -5,11 +5,11 @@ import { IEvents } from "./base/events";
 export interface IPage {
     catalog: HTMLElement;   // каталог товаров
     basket: HTMLElement;    // корзина
-    counter: HTMLElement;   //счетчикк товаров в корзине
+    counter: HTMLElement;   // счетчикк товаров в корзине
 }
 
 export class Page extends Component<IPage> {
-    protected _catalog: HTMLElement;
+    protected _catalog: HTMLButtonElement;
     protected _basket: HTMLElement;
     protected _wrapper: HTMLElement;
     protected _counter: HTMLElement;
@@ -17,7 +17,7 @@ export class Page extends Component<IPage> {
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
         this._basket = ensureElement<HTMLElement>('.header__basket');
-        this._catalog = ensureElement<HTMLElement>('.gallery');
+        this._catalog = ensureElement<HTMLButtonElement>('.gallery');
         this._wrapper = ensureElement<HTMLElement>('.page__wrapper');
         this._counter = ensureElement<HTMLElement>('.header__basket-counter');
     

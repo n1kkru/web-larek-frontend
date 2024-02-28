@@ -4,7 +4,6 @@ import {Component} from "./base/Component";
 
 /* что то сделать с карточками */
 
-
 interface ICard {
   title: string;
   image: string;
@@ -118,7 +117,6 @@ export class BasketCard extends Component<ICardBasket> {
   protected _count: HTMLElement;
   protected _price: HTMLElement;
   protected _button: HTMLButtonElement;
-
 
   constructor(protected blockName: string, container: HTMLElement, actions?: IActions) {
     super(container);

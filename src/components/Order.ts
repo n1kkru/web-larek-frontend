@@ -4,21 +4,19 @@ import { Form } from "./Form";
 import { Component } from "./base/Component";
 import { IEvents } from "./base/events";
 
-
 export class OrderAddress extends Form<IOrderAddress> {
   protected _payment: PaymentType;
-  protected _address: string;
-  protected _addressField: HTMLInputElement;
+  protected _address: HTMLInputElement;
 
   constructor(protected container: HTMLFormElement, protected events: IEvents) {
     super(container, events);
 
     const fields = this.container.elements;
-    this._addressField = fields.namedItem('address') as HTMLInputElement;
+    this._address = fields.namedItem('address') as HTMLInputElement;
     const cardButton = fields.namedItem('card') as HTMLInputElement;
     const cashButton = fields.namedItem('cash') as HTMLInputElement;
 
-     cardButton.addEventListener('click', () => {
+    cardButton.addEventListener('click', () => {
       events.emit(`${this.container.name}.:change`, {value: 'card'});
       cardButton.classList.add('button_alt-active');
       cashButton.classList.remove('button_alt-active');
@@ -40,11 +38,11 @@ export class OrderAddress extends Form<IOrderAddress> {
   }
 
   set address(value: string) {
-    this._addressField.value = value;
+    this._address.value = value;
   }
 
   get address() : string {
-    return this._addressField.value;
+    return this._address.value;
   }
 }
 
@@ -79,16 +77,16 @@ export class OrderContacts extends Form<IOrderContacs> {
 
 export class OrderSuccess extends Component<IOrderSuccess> {
   protected _total: HTMLElement;
-  protected _close: HTMLElement;
+  protected _closeButton: HTMLButtonElement;
 
   constructor(container: HTMLElement, actions: IActions) {
       super(container);
 
       this._total = ensureElement<HTMLElement>('.order-success__description', this.container);
-      this._close = ensureElement<HTMLElement>('.order-success__close', this.container);
+      this._closeButton = ensureElement<HTMLButtonElement>('.order-success__close', this.container);
 
       if (actions?.onClick) {
-          this._close.addEventListener('click', actions.onClick);
+          this._closeButton.addEventListener('click', actions.onClick);
       }
   }
 

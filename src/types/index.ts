@@ -1,12 +1,15 @@
 export type PaymentType = 'card' | 'cash'; // способ оплаты
 
-export interface IItem {
+export interface IBasketItem {
   id: string;         // идентификатор товара
   title: string;      // имя товара
+  price: number;      // цена
+}
+
+export interface IItem extends IBasketItem {
   category: string;   // категория
   description: string;// описание
   image: string;      // изображение
-  price: number;      // цена
 }
 
 // для формы 1
@@ -37,4 +40,3 @@ export interface IActions {
 }
 
 export type FormErrors = Partial<Record<keyof IOrder, string>>;
-
