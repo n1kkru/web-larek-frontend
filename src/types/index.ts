@@ -1,12 +1,10 @@
 export type PaymentType = 'card' | 'cash'; // способ оплаты
 
-export interface IBasketItem {
+
+export interface IItem {
   id: string;         // идентификатор товара
   title: string;      // имя товара
   price: number;      // цена
-}
-
-export interface IItem extends IBasketItem {
   category: string;   // категория
   description: string;// описание
   image: string;      // изображение

@@ -7,7 +7,7 @@ import { Page } from './components/Page';
 import { Modal } from './components/Modal';
 import { BasketModel } from './components/BasketModel';
 import { BasketCard, Card, GalleryItem } from './components/Card';
-import { IBasketItem, FormErrors, IItem, IOrder, PaymentType } from './types';
+import { FormErrors, IItem, IOrder, PaymentType } from './types';
 import { Catalog } from './components/Catalog';
 import { OrderAddress, OrderContacts, OrderSuccess } from './components/Order';
 import { BasketView } from './components/BasketView';
@@ -73,12 +73,26 @@ events.on('card:open', (item: IItem) => {
     const card = new Card(
       'card', 
       cloneTemplate(modalCardTemplate),
-      {onClick: () => events.emit('product:add', {
-        id: item.id,
-        title: item.title,
-        price: item.price
-      })  
+      {onClick: () => {
+        if (!basketModel.hasItem(item.id)) {          
+          card.setDisabledButton(true);
+          card.button = 'Удалить из корзины';
+          events.emit('product:add', (item));
+        }
+        else {
+          card.setDisabledButton(false);
+          card.button = 'Добавить в корзину';
+          events.emit('product:remove', {item, modalFrom:  'card'} );
+        }
+      }
     });
+
+    if (!basketModel.hasItem(item.id)) {          
+      card.button = 'Добавить в корзину';
+    }
+    else {
+      card.button = 'Удалить из корзины';
+    }
 
     modal.render({
       content: card.render({
@@ -86,16 +100,18 @@ events.on('card:open', (item: IItem) => {
         image: item.image,
         description: item.description,
         price: item.price,
-        category: item.category
+        category: item.category,
+        button: card.button,
       })
     });
   }
 });
 
 // Добавить в корзину
-events.on('product:add', (basketItem : IBasketItem) => {
-  basketModel.add(basketItem);
+events.on('product:add', (item : IItem) => {
+  basketModel.add(item);
   page.counter = basketModel.getCount();
+  events.emit('card:open', (item));
 })
 
 // Отобразить корзину
@@ -106,7 +122,7 @@ events.on('basket:open', () => {
     const card = new BasketCard(
       'card',
       cloneTemplate(cardInBasketTemplate), 
-      {onClick: () => events.emit('product:remove', item)}
+      {onClick: () => events.emit('product:remove', {item, modalFrom: 'basket'} )}
     );
     return card.render({
         count: iCount,
@@ -122,10 +138,10 @@ events.on('basket:open', () => {
 })
 
 // Удаление продукта
-events.on('product:remove', (item: IBasketItem) => {
-  basketModel.remove(item.id);
+events.on('product:remove', (data : {item: IItem, modalFrom: String}) => {
+    basketModel.remove(data.item.id);
   page.counter = basketModel.getCount();
-  events.emit('basket:open');
+  (data.modalFrom === 'basket')? events.emit('basket:open') : events.emit('card:open', data.item);
 })
 
 // Начать оформление (открывается Order)

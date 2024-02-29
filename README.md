@@ -10,17 +10,12 @@ type PaymentType = 'card' | 'cash';
 ```
 - тип описывающий способ оплаты ("онлайн" или "при получении"). Используется в интерфейсе **IOrderAddress**
 
-Интерфейс для единицы товара в корзине.
+Интерфейс для единицы товара в карточке .
 ```TypeScript
-interface IBasketItem {
+export interface IItem {
   id: string;         // идентификатор товара
   title: string;      // имя товара
   price: number;      // цена
-}
-```
-Интерфейс для единицы товара в карточке расширяет интерфейс товара корзины.
-```TypeScript
-export interface IItem extends IBasketItem {
   category: string;   // категория
   description: string;// описание
   image: string;      // изображение
@@ -28,14 +23,14 @@ export interface IItem extends IBasketItem {
 ```
 В нем содержаться поля об идентификаторе, названии, категории товара, описание товара, изображение товара и цена.
 
-Интерфейс 
+От интерфейса 
 ```TypeScript
 interface IOrderAddress {
   payment: PaymentType | null;
   address: string;
 }
 ```
-реализует класс для формы адреса.
+реализован класс для формы адреса.
 
 А интерфейс 
 ```TypeScript
@@ -97,19 +92,20 @@ interface ICatalog {
 ```
 Класс хранит список товаров предстваленных на главном экране. Методы позволяют добавить один товар или список товаров, и получить выбранный продукт по id или все сразу.
 
-### 2. Класс **Basket**
+### 2. Класс **BasketModel**
 Модель корзины реализована через интерфейс
 ```TypeScript
 interface IBasketModel {
-  _items: IBasketItem[];
-  add(newItem: IBasketItem): void;
+  _items: IItem[];
+  add(newItem: IItem): void;
   remove(id: string) : void;
+  hasItem(id: string): boolean;
   clear(): void;
-  getItems(): IBasketItem[];
+  getItems(): IItem[];
   getCount() : number;
 }
 ```
-Класс содержит в себе поле для хранения списка товаров в корзине, а также методы для добавления и удаления элементов корзины, полной очистки корзины, получения списка товаров и количества товаров в корзине.
+Класс содержит в себе поле для хранения списка товаров в корзине, а также методы для добавления и удаления элементов корзины, полной очистки корзины, получения списка товаров и количества товаров в корзине. Есть метод, который проверяет есть ли товар в корзине.
 
 ### 3. Класс **WebAPI**
 ```TypeScript
@@ -167,7 +163,7 @@ this._basket.addEventListener('click', () => {
 })
 ```
 
-### 3. Классы **Card**, **GalleryItem** и **BasketCard**
+### 4. Классы **Card**, **GalleryItem** и **BasketCard**
 В каталоге содержится компонента карточки товаров с интерфейсом
 ```TypeScript
 interface ICard {
@@ -189,7 +185,7 @@ interface ICardBasket {
 }
 ```
 
-### 4. Класс **BasketView**
+### 5. Класс **BasketView**
 Сам элемент корзины описан интерфейсом
 ```TypeScript
 interface IBasketView {
@@ -199,11 +195,11 @@ interface IBasketView {
 ```
 Здесь есть список товаров и общая сумма заказа и кнопка "Оформить" для открытия модальных окон с формами оформления заказа. 
 
-### 5. Классы **OrderAddress**, **OrderContacts**
+### 6. Классы **OrderAddress**, **OrderContacts**
 Данные классы наследуются от компоненты формы и реализуют ее заполнение. 
 **OrderAddress** для способа оплаты и адреса. Кнпка "Далее" открывает другую форму -  **OrderContacts** - для полей телефона и почты. В нем кнопка "Оплатить" открывет модальное окно с сообщением об успешной покупке.
 
-### 6. Класс **OrderSuccess**
+### 7. Класс **OrderSuccess**
 Данная компонента выводит текст об успешной покупке и сумму покупки.
 
 

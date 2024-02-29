@@ -1,18 +1,19 @@
-import { IBasketItem } from "../types";
+import { IItem } from "../types";
 
 export interface IBasketModel {
-  _items: IBasketItem[];              // список товаров в корзине
-  add(newItem: IBasketItem): void;    // добавить товар в корзину
+  _items: IItem[];              // список товаров в корзине
+  add(newItem: IItem): void;    // добавить товар в корзину
   remove(id: string) : void;          // удалить из корзины
   clear(): void;                      // отчистить корзину
-  getItems(): IBasketItem[];          // получить корзину
+  hasItem(id: string): boolean        // проверяет есть ли товар в корзине
+  getItems(): IItem[];          // получить корзину
   getCount() : number;                // получить количество товаров в корзине
 }
 
 export class BasketModel implements IBasketModel {
-  _items : IBasketItem[] = [];
+  _items : IItem[] = [];
 
-  add(newItem: IBasketItem): void {
+  add(newItem: IItem): void {
     this._items.push(newItem);
   }
 
@@ -24,7 +25,11 @@ export class BasketModel implements IBasketModel {
     this._items = [];
   }
 
-  getItems(): IBasketItem[] {
+  hasItem(id: string) {
+    return this._items.find(item => item.id === id)? true : false;
+  }
+
+  getItems(): IItem[] {
     return this._items;
   }
 

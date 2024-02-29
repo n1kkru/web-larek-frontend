@@ -10,6 +10,7 @@ interface ICard {
   category: string;
   price: number;
   description: string;
+  button: string;
 }
 
 export class Card extends Component<ICard> {
@@ -18,7 +19,7 @@ export class Card extends Component<ICard> {
   protected _category?: HTMLElement;
   protected _price: HTMLElement;
   protected _description?: HTMLElement;
-  protected _buttonBuy?: HTMLButtonElement;
+  protected _button?: HTMLButtonElement;
 
   constructor(protected blockName: string, container: HTMLElement, actions?: IActions) {
     super(container);
@@ -28,11 +29,19 @@ export class Card extends Component<ICard> {
     this._category = container.querySelector(`.${blockName}__category`);
     this._price = container.querySelector(`.${blockName}__price`);
     this._description = container.querySelector(`.${blockName}__text`);
-    this._buttonBuy = container.querySelector(`.${blockName}__button`);
+    this._button = container.querySelector(`.${blockName}__button`);
     
     if (actions?.onClick) {
-      this._buttonBuy.addEventListener('click', actions.onClick);
+      this._button.addEventListener('click', actions.onClick);
     }
+  }
+
+  set button(value: string) {
+    this.setText(this._button, value);
+  }
+
+  get button(): string {
+    return this._button.textContent;
   }
 
   set title(value: string) {
@@ -55,7 +64,7 @@ export class Card extends Component<ICard> {
   set price(value: number) {
     if (value === null) {
       this.setText(this._price, 'Бесценно');
-      this.setDisabled(this._buttonBuy, true);
+      this.setDisabled(this._button, true);
     }
     else {
       this.setText(this._price, value + ' синапсов');
@@ -64,6 +73,13 @@ export class Card extends Component<ICard> {
 
   get price() : number {
     return Number(this._price.textContent);
+  }
+
+  setDisabledButton(value : boolean): void {
+    this.setDisabled(this._button, value);
+    value ? 
+      this.setText(this._button, 'Удалить из корзины') 
+      : this.setText(this._button, 'Добавить в корзину');    
   }
 
   private setColor(category: string) {
